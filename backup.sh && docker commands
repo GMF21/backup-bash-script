@@ -1,0 +1,37 @@
+Comandos
+
+docker exec -it "nome container" /bin/bash
+
+mysql -u root -p (password)
+----------------------------------
+
+#!/bin/bash
+
+# Verifica se foram passados exatamente 3 argumentos
+if [ $# -ne 3 ]; then (not equal)
+    echo "Uso: $0 <nome_do_container> <nome_da_base_de_dados> <ficheiro_de_destino_sem_extensão>"
+    exit 1
+fi
+
+CONTAINER_NAME="$1"
+DB_NAME="$2"
+DEST_BASE="$3"
+
+read -p "MySQL username: " MYSQL_USER
+read -s -p "Password: " MYSQL_PASS
+echo
+
+#cria ficheiro com data e hora
+TIMESTAMP=$(date '+_%Y-%m-%d_%H-%M-%S')
+BACKUP_FILE="${DEST_BASE}${TIMESTAMP}.sql"
+
+# mysqldump dentro do container
+docker exec "$CONTAINER_NAME" sh -c "mysqldump -u$MYSQL_USER -p$MYSQL_PASS $DB_NAME" > "$BACKUP_FILE"
+
+# Verificação do sucesso do backup
+if [ $? -eq 0 ]; then #verifica se sao inguais o -eq , $? refere se ao ultimo comando
+    echo "Backup criado com sucesso: $BACKUP_FILE"
+else
+    echo "Erro ao criar o backup!"
+    exit 2
+fi
