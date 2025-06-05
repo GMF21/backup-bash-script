@@ -8,7 +8,7 @@ mysql -u root -p (password)
 #!/bin/bash
 
 # Verifica se foram passados exatamente 3 argumentos
-if [ $# -ne 3 ]; then (not equal)
+if [ $# -ne 3 ]; then #(not equal)
     echo "Uso: $0 <nome_do_container> <nome_da_base_de_dados> <ficheiro_de_destino_sem_extensão>"
     exit 1
 fi
