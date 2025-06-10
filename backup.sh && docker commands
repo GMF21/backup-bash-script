@@ -26,7 +26,7 @@ TIMESTAMP=$(date '+_%Y-%m-%d_%H-%M-%S')
 BACKUP_FILE="${DEST_BASE}${TIMESTAMP}.sql"
 
 # mysqldump dentro do container
-docker exec "$CONTAINER_NAME" sh -c "mysqldump -u$MYSQL_USER -p$MYSQL_PASS $DB_NAME" > "$BACKUP_FILE"
+docker exec "$CONTAINER_NAME" "mysqldump -u$MYSQL_USER -p$MYSQL_PASS $DB_NAME" > "$BACKUP_FILE"
 
 # Verificação do sucesso do backup
 if [ $? -eq 0 ]; then #verifica se sao inguais o -eq , $? refere se ao ultimo comando
